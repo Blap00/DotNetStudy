@@ -4,15 +4,33 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ASPNetMvCApp.Controllers
 {
     public class AccountController : Controller
     {  
+        //INDEX TESTING
+        public IActionResult Index()
+        {
+            string Name = (string)TempData.Peek("Name");
+            string Message = (string)TempData["Message"];
+
+            string nopersistant = Request.Cookies["non-persistant"];
+            string persistant = Request.Cookies["persistant"];
+
+            string name = HttpContext.Session.GetString("Name");
+            string user = HttpContext.Session.GetString("User");
+
+            LoginModel model = JsonSerializer.Deserialize<LoginModel>(user);
+
+            return View();
+        }
+
+
         // REGISTER
         [HttpGet]
-        
         public IActionResult UserSignup()
         {
             return View();
@@ -20,37 +38,29 @@ namespace ASPNetMvCApp.Controllers
         [HttpPost]
         public IActionResult UserSignup(LoginModel model)
         {
-            //if (string.IsNullOrEmpty(model.Name))
-            //{
-            //    ModelState.AddModelError("Name", "Please, enter a correct name to it.");
-            //}
-            //if (string.IsNullOrEmpty(model.Username))
-            //{
-            //    ModelState.AddModelError("Username", "Please, enter a correct username to it.");
-            //}
-            //if (string.IsNullOrEmpty(model.Password))
-            //{
-            //    ModelState.AddModelError("Password", "Please, enter a correct password to it.");
-            //}
-            //if (string.IsNullOrEmpty(model.ConfirmPassword))
-            //{
-            //    ModelState.AddModelError("ConfirmPassword", "Please, enter a correct password to it.");
-            //}
-            //if(!string.Equals(model.Password, model.ConfirmPassword))
-            //{
-            //    ModelState.AddModelError("ConfirmPassword", "Please, be aware, the password must match.");
-            //}
-            //if (string.IsNullOrEmpty(model.Contact))
-            //{
-            //    ModelState.AddModelError("Contact", "Please, enter a correct contact to it.");
-            //}
-            //if (!model.Terms)
-            //{
-            //    ModelState.AddModelError("Terms", "Please, agree with TERMS & CONDITION");
-            //}
             if (ModelState.IsValid)
             {
-                return Redirect("/Account/Login");
+                //TEMP DATA WORKS ONLY WHEN IT PASS THERE, IF IT DOESN'T EXIST IT WILL DELEETE ITSELF
+                TempData["Name"] = model.Name;
+                TempData["Message"] = "Welcome back " + model.Name + "!";
+
+                // Non persistent cookie:
+                Response.Cookies.Append("non-persisten", "my non-persistant cookie");
+
+                // Persistant cookie (MOST SAFE FOR USERS)
+                var options = new CookieOptions { Expires = DateTime.Now.AddDays(7) };
+                Response.Cookies.Append("persistant", "persistant cookie!", options);
+
+                // Strin Serializer;
+                string strData = JsonSerializer.Serialize(model);
+
+                // ADD SESSION
+                HttpContext.Session.SetString("Name", "Name");
+                HttpContext.Session.SetString("User", strData);
+
+
+                //TODO: APPLY A REAL DBA:
+                return RedirectToAction("Index", "Account");
             }
             return View();
         }
