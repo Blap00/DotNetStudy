@@ -15,9 +15,9 @@ namespace DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (optionsBuilder.IsConfigured)
+            if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("data source=Shailendra\\SQLExpress; initial caltalog=EFCoreSCM;persist security info=True;user id=sa;password=dotnettricks;");
+                optionsBuilder.UseSqlServer("Server=PC-FABIAN; Database = master; Persist Security Info = True;user ID=coreAPP; password=dotnetadmin");
             }
             
             base.OnConfiguring(optionsBuilder);
