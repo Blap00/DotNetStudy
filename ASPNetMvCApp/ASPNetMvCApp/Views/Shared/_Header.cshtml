@@ -1,4 +1,9 @@
-﻿<header>
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ASPNetMvCApp</a>
@@ -9,16 +14,16 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link text-dark @(currentController == "Home" && currentAction == "Index" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="nav-link text-dark @(currentController == "Home" && currentAction == "Privacy" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Article" asp-action="Index">Article</a>
+                        <a class="nav-link text-dark @(currentController == "Article" && currentAction == "Index" ? "active" : "")" asp-area="" asp-controller="Article" asp-action="Index">Article</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="nav-link text-dark @(currentController == "Account" && currentAction == "Login" ? "active" : "")" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                     </li>
                 </ul>
             </div>
