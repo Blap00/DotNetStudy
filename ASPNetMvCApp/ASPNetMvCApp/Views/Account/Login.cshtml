@@ -26,7 +26,8 @@
             @Html.PasswordFor(m => m.Password, new { @class = "form-control"})
         </div>
         <div>
-            <input type="submit" />
+            @*<input type="submit" />*@
+            @Html.SubmitButton("Command", "Login")
         </div>
     }
 
