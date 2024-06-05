@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ASPNetMvCApp.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,9 +17,10 @@ namespace ASPNetMvCApp.Models
         public string Password { get; set; }
         [Compare("Password",ErrorMessage = "Please, Password must match")]
         public string ConfirmPassword{ get; set; }
-        [RegularExpression("^[2,5,6,9]\\d{9}",ErrorMessage = "Please, enter a correct number")]
+        [Required(ErrorMessage = "Please, enter a contact number")]
+        [RegularExpression("^[2,56]\\d{9}$", ErrorMessage = "Please, enter a correct number")]
         public string Contact { get; set; }
-        [Required(ErrorMessage = "Please, acept terms and services")]
+        [ValidateCheckbox(ErrorMessage = "Please, accept terms and services")]
         public bool Terms { get; set; }
 
     }
