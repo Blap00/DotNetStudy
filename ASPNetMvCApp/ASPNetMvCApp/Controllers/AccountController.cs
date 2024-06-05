@@ -7,14 +7,23 @@ using System.Threading.Tasks;
 namespace ASPNetMvCApp.Controllers
 {
     public class AccountController : Controller
-    {
-        public IActionResult Index()
-        {
-            return View();
-        }
+    {  
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
+        }
+        [HttpPost]
+        public IActionResult UserLogin(String Username, String Password)
+        {
+            if(Username=="Pass" && Password == "Data")
+            {
+                return Redirect("/");
+            }
+            else
+            {
+                return View();
+            }            
         }
     }
 }

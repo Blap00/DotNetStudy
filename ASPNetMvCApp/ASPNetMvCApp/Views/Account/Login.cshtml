@@ -5,7 +5,7 @@
 }
 
 <h1>Login</h1>
-<form asp-action="Login" asp-controller="Account">
+@*<form asp-action="Login" asp-controller="Account">
     <div>
         Username:<input type="text" asp-for="Username" />
     </div>
@@ -15,5 +15,20 @@
     <div>
         <input type="submit" value="Login" />
     </div>
-</form>
+</form>*@
+
+@using (Html.BeginForm("UserLogin","Account", method: FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.Username, new { @class = "control-label" }):
+            @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Password, new { @class = "control-label" }):
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control"})
+        </div>
+        <div>
+            <input type="submit" />
+        </div>
+    }
 

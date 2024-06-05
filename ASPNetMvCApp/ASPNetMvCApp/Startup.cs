@@ -49,9 +49,17 @@ namespace ASPNetMvCApp
 
             app.UseEndpoints(endpoints =>
             {
+                //endpoints.MapControllerRoute( //Redirect the correct route
+                //    name: "default1",
+                //    pattern: "site/{controller=index}/{action}/{id}");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "login",
+                    pattern: "{controller=Account}/{action=Login}/{id?}");
             });
         }
     }

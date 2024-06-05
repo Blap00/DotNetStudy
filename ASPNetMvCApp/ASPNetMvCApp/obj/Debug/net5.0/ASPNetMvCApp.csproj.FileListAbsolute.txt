@@ -120,5 +120,6 @@ C:\Users\56941\Dropbox\PC\Documents\GitHub\DotNetStudy\ASPNetMvCApp\ASPNetMvCApp
 C:\Users\56941\Dropbox\PC\Documents\GitHub\DotNetStudy\ASPNetMvCApp\ASPNetMvCApp\obj\Debug\net5.0\Razor\Views\Shared\_Header.cshtml.g.cs
 C:\Users\56941\Dropbox\PC\Documents\GitHub\DotNetStudy\ASPNetMvCApp\ASPNetMvCApp\obj\Debug\net5.0\Razor\Views\Shared\_Footer.cshtml.g.cs
 C:\Users\56941\Dropbox\PC\Documents\GitHub\DotNetStudy\ASPNetMvCApp\ASPNetMvCApp\obj\Debug\net5.0\Razor\Views\Article\Index.cshtml.g.cs
-C:\Users\56941\Dropbox\PC\Documents\GitHub\DotNetStudy\ASPNetMvCApp\ASPNetMvCApp\obj\Debug\net5.0\Razor\Views\Article\Components\Comment\Default.cshtml.g.cs
 C:\Users\56941\Dropbox\PC\Documents\GitHub\DotNetStudy\ASPNetMvCApp\ASPNetMvCApp\obj\Debug\net5.0\Razor\Views\Shared\_Comments.cshtml.g.cs
+C:\Users\56941\Dropbox\PC\Documents\GitHub\DotNetStudy\ASPNetMvCApp\ASPNetMvCApp\obj\Debug\net5.0\Razor\Views\Product\Index.cshtml.g.cs
+C:\Users\56941\Dropbox\PC\Documents\GitHub\DotNetStudy\ASPNetMvCApp\ASPNetMvCApp\obj\Debug\net5.0\Razor\Views\Product\Data.cshtml.g.cs
