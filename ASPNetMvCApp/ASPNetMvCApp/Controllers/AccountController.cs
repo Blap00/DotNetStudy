@@ -10,6 +10,20 @@ namespace ASPNetMvCApp.Controllers
 {
     public class AccountController : Controller
     {  
+        // REGISTER
+        [HttpGet]
+        
+        public IActionResult UserSignup()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult UserSignup(LoginModel model)
+        {
+            return View();
+        }
+
+        // LOGIN
         [HttpGet]
         public IActionResult Login()
         {
@@ -20,15 +34,21 @@ namespace ASPNetMvCApp.Controllers
         {
             string command = form["Command"];
             string Username = form["Username"];
-            string Password = form["Password"]
-            if(command == "Loging")
+            string Password = form["Password"];
+            if (command == "Login")
             {
                 return Redirect("/");
+            }
+            else if (command == "Signup")
+            {
+                return Redirect("/Account/UserSignup");
             }
             else
             {
                 return View();
-            }            
+            }
         }
+
+
     }
 }

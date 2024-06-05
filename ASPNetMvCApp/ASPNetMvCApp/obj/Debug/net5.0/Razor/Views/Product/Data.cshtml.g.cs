@@ -21,13 +21,20 @@ using ASPNetMvCApp;
 #nullable disable
 #nullable restore
 #line 2 "C:\Users\56941\Dropbox\PC\Documents\GitHub\DotNetStudy\ASPNetMvCApp\ASPNetMvCApp\Views\_ViewImports.cshtml"
+using ASPNetMvCApp.Helpers;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 3 "C:\Users\56941\Dropbox\PC\Documents\GitHub\DotNetStudy\ASPNetMvCApp\ASPNetMvCApp\Views\_ViewImports.cshtml"
 using ASPNetMvCApp.Models;
 
 #line default
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"d93fd5ba28d8a943807a5b29e4f710cb9fc6caf8", @"/Views/Product/Data.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"47c6ac024100fc589dd144a452679a5c69dcb50a", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"ce96048738a66a0fb4bf3a072053d4143c7eade3", @"/Views/_ViewImports.cshtml")]
     public class Views_Product_Data : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
     {
         #pragma warning disable 1998

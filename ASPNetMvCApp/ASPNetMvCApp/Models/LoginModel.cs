@@ -7,35 +7,14 @@ namespace ASPNetMvCApp.Models
 {
     public class LoginModel
     {
-        public String Username { get; set; }
+        public string Name { get; set; }
 
-        public String Password { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string ConfirmPassword{ get; set; }
+        public string Contact { get; set; }
 
-
-
-        // Getters & Setters
-
-        //Username
-        public String getUsername()
-        {
-            return this.Username;
-        }
-        public String setUsername(String username)
-        {
-            return this.Username = username;
-        }
-
-        //Password
-        public String getPassword()
-        {
-            return this.Password;
-        }
-        public String setPassword(String password)
-        {
-            return this.Password = password;
-        }
-
-
+        public bool Terms { get; set; }
 
     }
 }

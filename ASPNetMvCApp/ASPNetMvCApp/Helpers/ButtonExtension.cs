@@ -11,7 +11,12 @@ namespace ASPNetMvCApp.Helpers
     {
         public static IHtmlContent SubmitButton(this IHtmlHelper htmlHelper, string name, string value)
         {
-            string str = $"<input type:'submit' name = '{name}' value='{value}'>";
+            string str = $"<input type='submit' name = '{name}' value='{value}'>";
+            return new HtmlString(str);
+        }
+        public static IHtmlContent SingUpButton(this IHtmlHelper htmlHelper, string name, string value)
+        {
+            string str = $"<input type='submit' name = '{name}' value='{value}'>";
             return new HtmlString(str);
         }
     }
