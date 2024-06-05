@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ASPNetMvCApp.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +16,12 @@ namespace ASPNetMvCApp.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult UserLogin(String Username, String Password, string command)
+        public IActionResult UserLogin(IFormCollection form)
         {
+            string command = form["Command"];
+            string Username = form["Username"];
+            string Password = form["Password"]
             if(command == "Loging")
-            if(Username=="Pass" && Password == "Data")
             {
                 return Redirect("/");
             }
