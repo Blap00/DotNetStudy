@@ -38,7 +38,7 @@ Over LaunchSettings.json it were
     "iisExpress": {
       "applicationUrl": "http://localhost:4208",
       "sslPort": 44330
-    }
+    } // This SSL PORT IS THE PORT OF IISExpress
   },
   "profiles": {
     "mvcApp": {
