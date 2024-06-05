@@ -14,8 +14,9 @@ namespace ASPNetMvCApp.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult UserLogin(String Username, String Password)
+        public IActionResult UserLogin(String Username, String Password, string command)
         {
+            if(command == "Loging")
             if(Username=="Pass" && Password == "Data")
             {
                 return Redirect("/");
