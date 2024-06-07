@@ -1,0 +1,5 @@
+C:\Users\56941\Dropbox\PC\Documents\GitHub\DotNetStudy\CursoMVC\CapaEntidad\obj\Debug\CapaEntidad.csproj.CoreCompileInputs.cache
+C:\Users\56941\Dropbox\PC\Documents\GitHub\DotNetStudy\CursoMVC\CapaEntidad\bin\Debug\CapaEntidad.dll
+C:\Users\56941\Dropbox\PC\Documents\GitHub\DotNetStudy\CursoMVC\CapaEntidad\bin\Debug\CapaEntidad.pdb
+C:\Users\56941\Dropbox\PC\Documents\GitHub\DotNetStudy\CursoMVC\CapaEntidad\obj\Debug\CapaEntidad.dll
+C:\Users\56941\Dropbox\PC\Documents\GitHub\DotNetStudy\CursoMVC\CapaEntidad\obj\Debug\CapaEntidad.pdb
