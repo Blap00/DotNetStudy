@@ -12,9 +12,6 @@ namespace CapaPresentacionAdmin.Controllers
         {
             return View();
         }
-        public ActionResult Usuarios()
-        {
-            return View();
-        }
+        
     }
 }

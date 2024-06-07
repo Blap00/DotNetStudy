@@ -53,28 +53,28 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
-                        <div class="sb-sidenav-menu-heading">Modelos</div>
-                        <a class="nav-link" href="@Url.Action("Usuarios","Home")" aria-expanded="false">
+                        <div class="sb-sidenav-menu-heading">Accesos</div>
+                        <a class="nav-link" href="@Url.Action("Usuarios","Mantenedor")" aria-expanded="false">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                             Usuarios
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <a class="nav-link collapsed" href="#" aria-expanded="false">
+                        <a class="nav-link collapsed" href="@Url.Action("Categorias","Mantenedor")" aria-expanded="false">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                             Categorias
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <a class="nav-link collapsed" href="#" aria-expanded="false">
+                        <a class="nav-link collapsed" href="@Url.Action("Marcas","Mantenedor")" aria-expanded="false">
                             <div class="sb-nav-link-icon"><i class="fas fa-bookmark"></i></div>
                             Marcas
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <a class="nav-link collapsed" href="#" aria-expanded="false">
+                        <a class="nav-link collapsed" href="@Url.Action("Productos","Mantenedor")" aria-expanded="false">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Productos
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <a class="nav-link collapsed" href="#" aria-expanded="false">
+                        <a class="nav-link collapsed" href="@Url.Action("Ventas","Mantenedor")" aria-expanded="false">
                             <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
                             Ventas
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -93,11 +93,11 @@
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                        <div class="text-muted">Copyright &copy; Ventas 2024-@DateTime.Now.Year</div>
                         <div>
-                            <a href="#">Privacy Policy</a>
+                            <a href="@Url.Action("Privacy","Home")">Privacy Policy</a>
                             &middot;
-                            <a href="#">Terms &amp; Conditions</a>
+                            <a href="@Url.Action("Terms","Home")">Terms &amp; Conditions</a>
                         </div>
                     </div>
                 </div>
