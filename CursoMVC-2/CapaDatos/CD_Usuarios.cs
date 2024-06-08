@@ -8,9 +8,9 @@ namespace CapaDatos
 {
     class CD_Usuarios
     {
-        public List<Usuarios> ListaUsuario()
-        {
+        //public List<> Listar()
+        //{
 
-        }
+        //}
     }
 }
