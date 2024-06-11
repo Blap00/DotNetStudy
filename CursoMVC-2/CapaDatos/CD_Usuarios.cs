@@ -51,7 +51,7 @@ namespace CapaDatos
                     new Usuario()
                     {
                         IdUsuario = 0,
-                        Nombres = "No encontrado",
+                        Nombres = ex.ToString(),
                         Apellidos = "No encontrado",
                         NombreUsuario = "No encontrado",
                         Correo = "No encontrado",

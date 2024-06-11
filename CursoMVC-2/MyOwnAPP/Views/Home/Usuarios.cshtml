@@ -1,8 +1,77 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Usuarios";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Usuarios</h2>
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Principal</a></li>
+    <li class="breadcrumb-item active">Usuarios</li>
+</ol>
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-users me-1"></i> Lista de Usuarios
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-12">
+                <button type="button" class="btn btn-success">Crear nuevo usuario</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table id="table-Usuarios" class="display responsive nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre de usuario</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Correo</th>
+                            <th>Activo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
+@section scripts{
+    <script>
+        $(document).ready(function () {
+    $('#table-Usuarios').DataTable({
+        responsive: true,
+        ordering: false,
+        ajax: {
+            url: '@Url.Action("ListarUsuarios", "Home")',
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json; charset=UTF-8',
+        },
+        columns: [
+            { data: 'IdUsuario' },
+            { data: 'NombreUsuario' },
+            { data: 'Nombres' },
+            { data: 'Apellidos' },
+            { data: 'Correo' },
+            {
+                data: 'Activo', render: function (data) {
+                    if (data) {
+                        return '<span class="badge bg-success">Activo</span>';
+                    } else {
+                        return '<span class="badge bg-danger">Desactivado</span>';
+                    }
+                }
+            },
+            //{
+            //    //defaultContent: 'Hello World'
+            //}
+        ]
+    });
+});
+
+    </script>
+}
