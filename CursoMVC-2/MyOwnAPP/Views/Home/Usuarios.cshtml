@@ -189,6 +189,7 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
+                    $('.modal-body').LoadingOverlay("show");
                     //  Usuario Nuevo
                     if (Usuario.IdUsuario == 0) {
                         if (data.resultado != 0) {
@@ -218,10 +219,16 @@
                     }
                 },
                 error: function (data) {
-                    console.log(error);
+                    $('.modal-body').LoadingOverlay("hide");
+                    $('#mensajeError').text("Error AJAX");
+                    $('#mensajeError').show();
                 },
                 beforeSend: function (data) {
-
+                    $('.modal-body').LoadingOverlay("show", {
+                        imageResizeFactor: 2,
+                        text: "Cargando...",
+                        size: 12
+                    })
                 },
             })
         }
