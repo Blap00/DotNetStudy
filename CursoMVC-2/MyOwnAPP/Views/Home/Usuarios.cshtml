@@ -15,12 +15,12 @@
     <div class="card-body">
         <div class="row mb-3">
             <div class="col-12">
-                <button type="button" class="btn btn-success">Crear nuevo usuario</button>
+                <button type="button" class="btn btn-success" onclick="abrirModal(null)">Crear nuevo usuario</button>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
-                <table id="table-Usuarios" class="display responsive nowrap" style="width:100%">
+                <table id="table-Usuarios" class="display cell-border responsive nowrap w-100" >
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -29,6 +29,7 @@
                             <th>Apellidos</th>
                             <th>Correo</th>
                             <th>Activo</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,40 +39,149 @@
         </div>
     </div>
 </div>
+<!-- MODAL -->
+<div class="modal fade" id="modalCrearUsuario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Crear Usuario</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input id="txtId" type="hidden" value="0">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="Nombres" class="form-label">Nombres</label>
+                        <input type="text" class="form-control" id="Nombres">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="Apellidos" class="form-label">Apellidos</label>
+                        <input type="text" class="form-control" id="Apellidos">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="Username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="Username">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="Mail" class="form-label">Mail</label>
+                        <input type="email" class="form-control" id="Mail">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="pass" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="pass">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="passConf" class="form-label">Confirmacion</label>
+                        <input type="password" class="form-control" id="passConf">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="txtActive" class="form-label">Esta activo</label>
+                        <select class="form-select" id="txtActive">
+                            <option selected disabled>Seleccione un valor</option>
+                            <option value="0">No</option>
+                            <option value="1">Si</option>
+                        </select>
+                    </div>
 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts{
     <script>
         $(document).ready(function () {
-    $('#table-Usuarios').DataTable({
-        responsive: true,
-        ordering: false,
-        ajax: {
-            url: '@Url.Action("ListarUsuarios", "Home")',
-            type: 'GET',
-            dataType: 'json',
-            contentType: 'application/json; charset=UTF-8',
-        },
-        columns: [
-            { data: 'IdUsuario' },
-            { data: 'NombreUsuario' },
-            { data: 'Nombres' },
-            { data: 'Apellidos' },
-            { data: 'Correo' },
-            {
-                data: 'Activo', render: function (data) {
-                    if (data) {
-                        return '<span class="badge bg-success">Activo</span>';
-                    } else {
-                        return '<span class="badge bg-danger">Desactivado</span>';
+            tabladata = $('#table-Usuarios').DataTable({
+                responsive: true,
+                ordering: false,
+                ajax: {
+                    url: '@Url.Action("ListarUsuarios", "Home")',
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8',
+                },
+                columns: [
+                    { data: 'IdUsuario' },
+                    { data: 'NombreUsuario' },
+                    { data: 'Nombres' },
+                    { data: 'Apellidos' },
+                    { data: 'Correo' },
+                    {
+                        data: 'Activo', render: function (data) {
+                            if (data) {
+                                return '<span class="badge bg-success">Activo</span>';
+                            } else {
+                                return '<span class="badge bg-danger">Desactivado</span>';
+                            }
+                        }
+                    },
+                    {
+                        defaultContent: '<button type="button" class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen me-1"></i></button>' +
+                            '<button type="button" class="btn btn-danger btn-sm ms-1"><i class="fas fa-trash me-1"></i></button>',
+                        "orderable": false,
+                        "searchable": false,
+                        "width":"90px"
                     }
+                ],
+                language: {
+                    "url": "https://cdn.datatables.net/plug-ins/2.0.8/i18n/es-CL.json"
                 }
-            },
-            //{
-            //    //defaultContent: 'Hello World'
-            //}
-        ]
-    });
-});
+            });
+            $('#table-Usuarios').on("click", ".btn-editar", function () {
+                var filaSelect = $(this).closest("tr");
+                rowTabla = tabladata.row(filaSelect).data();
+                console.log(rowTabla);
+                abrirModal(rowTabla);
+            });
+            
+        });
+        function abrirModal(Json) {
+            $('#txtId').val("0");
+            $('#Nombres').val("");
+            $('#Apellidos').val("");
+            $('#Username').val("");
+            $('#Mail').val("");
+            $('#txtActive').val("");
+
+            if (Json != null) {
+                $('#txtId').val(Json.IdUsuario);
+                $('#Nombres').val(Json.Nombres)
+                $('#Apellidos').val(Json.Apellidos)
+                $('#Username').val(Json.NombreUsuario)
+                $('#Mail').val(Json.Correo)
+                $('#txtActive').val(Json.Activo == true ? 1:0)
+            }
+            $('#modalCrearUsuario').modal("show");
+        }
+        function guardar() {
+            let Usuario = {
+                Activo: $('#txtActive').val()==1 ? true: false,
+                Apellidos: $('#Apellidos').val(),
+                Correo: $('#Mail').val(),
+                IdUsuario: $('#txtId').val(),
+                NombreUsuario: $('#Username').val(),
+                Nombres: $('#Nombres').val(),
+            }
+
+            if (Usuario.IdUsuario == 0) {
+                alert("Creando usuario");
+                tabladata.row.add(Usuario).draw(false);
+            } else {
+                alert("Modificando usuario con id:"+ Usuario.IdUsuario);
+            }
+            $('#modalCrearUsuario').modal("hide");
+
+        }
 
     </script>
 }

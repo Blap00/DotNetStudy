@@ -64,5 +64,105 @@ namespace CapaDatos
 
             return lista;
         }
+
+        public int GuardarUsuario(Usuario obj, out string Mensaje)
+        {
+            int idautogenerado = 0;
+            Mensaje = string.Empty;
+            try
+            {
+                using (SqlConnection oconeccion = new SqlConnection(Conexion.cn))
+                {
+                    SqlCommand cmd = new SqlCommand("spRegistrarUsuario", oconeccion);
+                    cmd.Parameters.AddWithValue("Nombres", obj.Nombres);
+                    cmd.Parameters.AddWithValue("Apellidos", obj.Apellidos);
+                    cmd.Parameters.AddWithValue("Username", obj.NombreUsuario);
+                    cmd.Parameters.AddWithValue("Correo", obj.Correo);
+                    cmd.Parameters.AddWithValue("Activo", obj.Activo);
+
+                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    oconeccion.Open();
+
+                    cmd.ExecuteNonQuery();
+
+                    idautogenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
+                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                }
+            }
+            catch(Exception ex)
+            {
+                idautogenerado = 0;
+                Mensaje = ex.Message;
+            }
+            return idautogenerado;
+        }
+        public bool EditarUsuario(Usuario obj, out string Mensaje)
+        {
+            bool idautogenerado = false;
+            Mensaje = string.Empty;
+            try
+            {
+                using (SqlConnection oconeccion = new SqlConnection(Conexion.cn))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_EditarUsuario", oconeccion);
+                    cmd.Parameters.AddWithValue("IdUsuario", obj.IdUsuario);
+                    cmd.Parameters.AddWithValue("Nombres", obj.Nombres);
+                    cmd.Parameters.AddWithValue("Apellidos", obj.Apellidos);
+                    cmd.Parameters.AddWithValue("Username", obj.NombreUsuario);
+                    cmd.Parameters.AddWithValue("Correo", obj.Correo);
+                    cmd.Parameters.AddWithValue("Activo", obj.Activo);
+
+                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    oconeccion.Open();
+
+                    cmd.ExecuteNonQuery();
+
+                    idautogenerado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
+                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                idautogenerado = false;
+                Mensaje = ex.Message;
+            }
+            return idautogenerado;
+        }
+        public bool deleteUsuario(int id, out string Mensaje)
+        {
+            bool resultado = false;
+            Mensaje = string.Empty;
+            try
+            {
+                using (SqlConnection oconeccion = new SqlConnection(Conexion.cn))
+                {
+                    SqlCommand cmd = new SqlCommand("delete top(1) from usuario where IdUsuario = @id", oconeccion);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+
+                    cmd.CommandType = CommandType.Text;
+
+                    oconeccion.Open();
+
+                    resultado = cmd.ExecuteNonQuery() > 0 ? true : false;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                Mensaje = ex.Message;
+            }
+            return resultado;
+        }
     }
 }
