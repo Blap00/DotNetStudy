@@ -30,7 +30,7 @@ namespace MyOwnAPP.Controllers
         {
             return View();
         }
-
+        //CRUD USUARIOS
         //GET JSON RESULT;
         [HttpGet]
         public JsonResult ListarUsuarios()
@@ -40,5 +40,23 @@ namespace MyOwnAPP.Controllers
 
             return Json(new { data= oLista }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public JsonResult GuardarUsuario(Usuario obj)
+        {
+            object resultado;
+            string Mensaje=string.Empty;
+
+            if (obj.IdUsuario == 0)
+            {
+                resultado = new CN_Usuarios().GuardarUsuario(obj, out Mensaje);
+            }
+            else
+            {
+                resultado = new CN_Usuarios().EditarUsuario(obj, out Mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = Mensaje }, JsonRequestBehavior.AllowGet);
+        }
+        //END CRUD USUARIOS
     }
 }

@@ -52,24 +52,24 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <label for="Nombres" class="form-label">Nombres</label>
-                        <input type="text" class="form-control" id="Nombres">
+                        <input type="text" class="form-control" id="Nombres" autocomplete="off">
                     </div>
                     <div class="col-sm-6">
                         <label for="Apellidos" class="form-label">Apellidos</label>
-                        <input type="text" class="form-control" id="Apellidos">
+                        <input type="text" class="form-control" id="Apellidos" autocomplete="off">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
                         <label for="Username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="Username">
+                        <input type="text" class="form-control" id="Username" autocomplete="off">
                     </div>
                     <div class="col-sm-6">
                         <label for="Mail" class="form-label">Mail</label>
-                        <input type="email" class="form-control" id="Mail">
+                        <input type="email" class="form-control" id="Mail" autocomplete="off">
                     </div>
                 </div>
-                <div class="row">
+                @*<div class="row">
                     <div class="col-sm-6">
                         <label for="pass" class="form-label">Contraseña</label>
                         <input type="password" class="form-control" id="pass">
@@ -78,17 +78,24 @@
                         <label for="passConf" class="form-label">Confirmacion</label>
                         <input type="password" class="form-control" id="passConf">
                     </div>
-                </div>
+                </div>*@
                 <div class="row">
                     <div class="col-sm-12">
                         <label for="txtActive" class="form-label">Esta activo</label>
                         <select class="form-select" id="txtActive">
-                            <option selected disabled>Seleccione un valor</option>
+                            <option disabled="disabled" selected="selected">Seleccione un valor</option>
                             <option value="0">No</option>
                             <option value="1">Si</option>
                         </select>
                     </div>
 
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div id="mensajeError" class="alert alert-danger" role="alert">
+
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -101,6 +108,8 @@
 @section scripts{
     <script>
         $(document).ready(function () {
+            $('#mensajeError').hide();
+
             tabladata = $('#table-Usuarios').DataTable({
                 responsive: true,
                 ordering: false,
@@ -143,7 +152,7 @@
                 console.log(rowTabla);
                 abrirModal(rowTabla);
             });
-            
+
         });
         function abrirModal(Json) {
             $('#txtId').val("0");
@@ -164,7 +173,7 @@
             $('#modalCrearUsuario').modal("show");
         }
         function guardar() {
-            let Usuario = {
+            var Usuario = {
                 Activo: $('#txtActive').val()==1 ? true: false,
                 Apellidos: $('#Apellidos').val(),
                 Correo: $('#Mail').val(),
@@ -173,14 +182,48 @@
                 Nombres: $('#Nombres').val(),
             }
 
-            if (Usuario.IdUsuario == 0) {
-                alert("Creando usuario");
-                tabladata.row.add(Usuario).draw(false);
-            } else {
-                alert("Modificando usuario con id:"+ Usuario.IdUsuario);
-            }
-            $('#modalCrearUsuario').modal("hide");
+            jQuery.ajax({
+                url: '@Url.Action("GuardarUsuario", "Home")',
+                type: 'POST',
+                data: JSON.stringify({ obj: Usuario }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    //  Usuario Nuevo
+                    if (Usuario.IdUsuario == 0) {
+                        if (data.resultado != 0) {
+                            Usuario.IdUsuario = data.resultado;
+                            tabladata.row.add(Usuario).draw(false);
+                            $('#modalCrearUsuario').modal("hide");
+                        } else {
+                            $('#mensajeError').text(data.mensaje);
+                            $('#mensajeError').show();
+                        }
+                        //  Usuario EDITADO                        
+                    } else {
+                        if (data.resultado) {
+                            var rowIndex = tabladata.row(function (idx, data, node) {
+                                return data.IdUsuario === Usuario.IdUsuario;
+                            }).index();
 
+                            if (rowIndex !== null) {
+                                tabladata.row(rowIndex).data(Usuario).draw(false);
+                            }
+
+                            $('#modalCrearUsuario').modal("hide");
+                        } else {
+                            $('#mensajeError').text(data.mensaje);
+                            $('#mensajeError').show();
+                        }
+                    }
+                },
+                error: function (data) {
+                    console.log(error);
+                },
+                beforeSend: function (data) {
+
+                },
+            })
         }
 
     </script>

@@ -40,7 +40,7 @@ namespace CapaNegocios
             }
             if (string.IsNullOrEmpty(Mensaje))
             {
-                string KeyBasic = obj.NombreUsuario.ToString()+2024;
+                string KeyBasic = (obj.NombreUsuario.ToString() + 2024).ToString();
                 obj.Clave = CN_Recursos.EncryptString(KeyBasic);
                 return objCDUsuarios.GuardarUsuario(obj, out Mensaje);
             }
@@ -80,6 +80,10 @@ namespace CapaNegocios
                 return false;
             }
 
+        }
+        public bool EliminarUsuario(int id, out string Mensaje)
+        {
+            return objCDUsuarios.deleteUsuario(id, out Mensaje);
         }
     }
 }
