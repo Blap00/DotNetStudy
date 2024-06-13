@@ -40,9 +40,32 @@ namespace CapaNegocios
             }
             if (string.IsNullOrEmpty(Mensaje))
             {
-                string KeyBasic = (obj.NombreUsuario.ToString() + 2024).ToString();
-                obj.Clave = CN_Recursos.EncryptString(KeyBasic);
-                return objCDUsuarios.GuardarUsuario(obj, out Mensaje);
+
+
+                string KeyBasic = CN_Recursos.GenerarClave();
+
+                string asunto = "Creación de cuentas en MVC Tienda";
+
+                string mensaje= "<h3>" +
+                                    "¡Su cuenta fue creada exitosamente!" +
+                                "</h3" +
+                                "</br>" +
+                                "<p>" +
+                                    "Su contraseña para acceder es: <strong>!clave!</strong>" +
+                                "</p>";
+                mensaje = mensaje.Replace("!clave!", KeyBasic);
+                bool answ = CN_Recursos.SendMail(obj.Correo, asunto, mensaje);
+                if (answ)
+                {
+                    obj.Clave = CN_Recursos.EncryptString(KeyBasic);
+                    return objCDUsuarios.GuardarUsuario(obj, out Mensaje);
+                }
+                else
+                {
+                    Mensaje = "No se logro enviar el correo";
+                    return 0;
+                }
+                
             }
             else
             {
@@ -85,5 +108,6 @@ namespace CapaNegocios
         {
             return objCDUsuarios.deleteUsuario(id, out Mensaje);
         }
+
     }
 }

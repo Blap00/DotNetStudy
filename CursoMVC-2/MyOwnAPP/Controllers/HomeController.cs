@@ -57,6 +57,18 @@ namespace MyOwnAPP.Controllers
             }
             return Json(new { resultado = resultado, mensaje = Mensaje }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public JsonResult DeleteUsuario(int id)
+        {
+            bool resultado;
+            string Mensaje = string.Empty;
+
+            resultado = new CN_Usuarios().EliminarUsuario(id, out Mensaje);
+
+            return Json(new { resultado = resultado, mensaje = Mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
         //END CRUD USUARIOS
     }
 }
