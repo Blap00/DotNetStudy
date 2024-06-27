@@ -99,7 +99,10 @@ namespace CapaDatos
                 using (SqlConnection oconeccion = new SqlConnection(Conexion.cn))
                 {
                     SqlCommand cmd = new SqlCommand("sp_EditarCategoria", oconeccion);
-                    cmd.Parameters.AddWithValue("IdUCategoria", obj.IdCategoria);
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("IdCategoria", obj.IdCategoria);
                     cmd.Parameters.AddWithValue("Descripcion", obj.Descripcion);
                     cmd.Parameters.AddWithValue("Activo", obj.Activo);
 
@@ -132,7 +135,7 @@ namespace CapaDatos
             {
                 using (SqlConnection oconeccion = new SqlConnection(Conexion.cn))
                 {
-                    SqlCommand cmd = new SqlCommand("delete top(1) from Categoria where IdUCategoria = @id", oconeccion);
+                    SqlCommand cmd = new SqlCommand("delete top(1) from Categoria where IdCategoria = @id", oconeccion);
                     cmd.Parameters.AddWithValue("@id", id);
 
                     cmd.CommandType = CommandType.Text;

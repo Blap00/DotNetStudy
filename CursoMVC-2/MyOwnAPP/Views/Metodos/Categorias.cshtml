@@ -53,192 +53,197 @@
                         <label for="Descripcion" class="form-label">Descripcion</label>
                         <input type="text" class="form-control" id="Descripcion" autocomplete="off">
                     </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <label for="txtActive" class="form-label">Esta activo</label>
-                        <select class="form-select" id="txtActive">
-                            <option disabled="disabled" selected="selected">Seleccione un valor</option>
-                            <option value="0">No</option>
-                            <option value="1">Si</option>
-                        </select>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label for="txtActive" class="form-label">Esta activo</label>
+                            <select class="form-select" id="txtActive">
+                                <option disabled="disabled" selected="selected">Seleccione un valor</option>
+                                <option value="0">No</option>
+                                <option value="1">Si</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-12">
-                    <div id="mensajeError" class="alert alert-danger" role="alert">
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div id="mensajeError" class="alert alert-danger" role="alert">
 
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-success" onclick="guardar()">Guardar</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" onclick="guardar()">Guardar</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 @section scripts{
     <script>
-        $(document).ready(function () {
-            $('#mensajeError').hide();
+    $(document).ready(function () {
+        $('#mensajeError').hide();
 
-            tabladata = $('#tableCategoria').DataTable({
-                responsive: true,
-                ordering: false,
-                ajax: {
-                    url: '@Url.Action("ListarCategorias", "Categoria")',
-                    type: 'GET',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=UTF-8',
-                },
-                columns: [
-                    { data: 'IdCategoria' },
-                    { data: 'Descripcion' },
-                    {
-                        data: 'Activo', render: function (data) {
-                            if (data) {
-                                return '<span class="badge bg-success">Activo</span>';
-                            } else {
-                                return '<span class="badge bg-danger">Desactivado</span>';
-                            }
+        tabladata = $('#tableCategoria').DataTable({
+            responsive: true,
+            ordering: false,
+            ajax: {
+                url: '@Url.Action("ListarCategorias", "Metodos")',
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8',
+            },
+            columns: [
+                { data: 'IdCategoria' },
+                { data: 'Descripcion' },
+                {
+                    data: 'Activo', render: function (data) {
+                        if (data) {
+                            return '<span class="badge bg-success">Activo</span>';
+                        } else {
+                            return '<span class="badge bg-danger">Desactivado</span>';
                         }
-                    },
-                    {
-                        defaultContent: '<button type="button" class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen me-1"></i></button>' +
-                            '<button type="button" class="btn btn-danger btn-sm ms-1 btn-eliminar"><i class="fas fa-trash me-1"></i></button>',
-                        "orderable": false,
-                        "searchable": false,
-                        "width":"90px"
                     }
-                ],
-                language: {
-                    "url": "https://cdn.datatables.net/plug-ins/2.0.8/i18n/es-CL.json"
+                },
+                {
+                    defaultContent: '<button type="button" class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen me-1"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-sm ms-1 btn-eliminar"><i class="fas fa-trash me-1"></i></button>',
+                    "orderable": false,
+                    "searchable": false,
+                    "width": "90px"
+                }
+            ],
+            language: {
+                "url": "https://cdn.datatables.net/plug-ins/2.0.8/i18n/es-CL.json"
+            }
+        });
+
+        $('#tableCategoria').on("click", ".btn-editar", function () {
+            var filaSelect = $(this).closest("tr");
+            rowTabla = tabladata.row(filaSelect).data();
+            abrirModal(rowTabla);
+        });
+
+        $('#tableCategoria').on("click", ".btn-eliminar", function () {
+            var categoriaSelect = $(this).closest("tr");
+            var rowCategoria = tabladata.row(categoriaSelect).data();
+
+            swal({
+                title: "¿Estas seguro?",
+                text: "¿Desea eliminar la Categoria?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                closeOnConfirm: true
+            },
+            function (data) {
+                if (data) {
+                    jQuery.ajax({
+                        url: '@Url.Action("DeleteCategoria", "Metodos")',
+                        type: 'POST',
+                        data: JSON.stringify({ id: rowCategoria.IdCategoria }),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (dataFunc) {
+                            $('.modal-body').LoadingOverlay("hide");
+                            if (dataFunc.resultado) {
+                                tabladata.row(categoriaSelect).remove().draw();
+                            } else {
+                                swal("No se puede eliminar.", dataFunc.mensaje, "Error.")
+                            }
+                        },
+                        error: function (dataFunc) {
+                            console.log('Error:', dataFunc);
+                            $('.modal-body').LoadingOverlay("hide");
+                        },
+                        beforeSend: function (dataFunc) {
+                            $('.modal-body').LoadingOverlay("show", {
+                                imageResizeFactor: 2,
+                                text: "Cargando...",
+                                size: 12
+                            });
+                        },
+                        complete: function () {
+                            $('.modal-body').LoadingOverlay("hide");
+                        }
+                    });
                 }
             });
-            $('#tableCategoria').on("click", ".btn-editar", function () {
-                var filaSelect = $(this).closest("tr");
-                rowTabla = tabladata.row(filaSelect).data();
-                abrirModal(rowTabla);
-            });
-            //btn-eliminar
-            $('#tableCategoria').on("click", ".btn-eliminar", function () {
-                var categoriaSelect = $(this).closest("tr");
-                var rowCategoria = tabladata.row(categoriaSelect).data();
-                console.log();
-
-                swal({
-                    title: "¿Estas seguro?",
-                    text: "¿Desea eliminar la Categoria?",
-                    type:"warning",
-                    showCancelButton:true,
-                    confirmButtonClass:"btn-danger",
-                    confirmButtonText:"Si",
-                    cancelButtonText:"No",
-                    closeOnConfirm: true
-                },
-                    function (data) {
-
-                        if (!data) {
-                            console.log("DATA FALSE: " + data);
-                        } else {
-
-                            jQuery.ajax({
-                                url: '@Url.Action("DeleteUsuario", "Home")',
-                                type: 'POST',
-                                data: JSON.stringify({ id: rowUsuario.IdUsuario }),
-                                dataType: "json",
-                                contentType: "application/json; charset=utf-8",
-                                success: function (dataFunc) {
-                                    if (dataFunc.resultado) {
-                                        tabladata.row(usuarioSelec).remove().draw();
-                                    }
-                                    else {
-                                        swal("No se puede eliminar.", dataFunc.mensaje," Error.")
-                                    }
-                                },
-                                error: function (dataFunc) {
-
-                                },
-                                beforeSend: function (dataFunc) {
-
-                                },
-                            })
-                        }
-                    }
-                )
-            });
         });
-        function abrirModal(Json) {
-            $('#txtId').val("0");
-            $('#Descripcion').val("");
-            $('#txtActive').val("");
+    });
 
-            if (Json != null) {
-                $('#txtId').val(Json.IdUsuario);
-                $('#Descripcion').val(Json.Nombres)
-                $('#txtActive').val(Json.Activo == true ? 1:0)
-            }
-            $('#modalCategorias').modal("show");
+    function abrirModal(Json) {
+        $('#txtId').val("0");
+        $('#Descripcion').val("");
+        $('#txtActive').val("");
+
+        if (Json != null) {
+            $('#txtId').val(Json.IdCategoria);
+            $('#Descripcion').val(Json.Descripcion);
+            $('#txtActive').val(Json.Activo ? 1 : 0);
         }
-        function guardar() {
-            var Categoria = {
-                Activo: $('#txtActive').val()==1 ? true: false,
-                Descripcion: $('#Descripcion').val(),
-                IdCategoria: $('#txtId').val(),
+        $('#modalCategorias').modal("show");
+    }
 
-            }
+    function guardar() {
+        var Categoria = {
+            Activo: $('#txtActive').val() == 1,
+            Descripcion: $('#Descripcion').val(),
+            IdCategoria: $('#txtId').val()
+        };
 
-            jQuery.ajax({
-                url: '@Url.Action("GuardarCategoria", "Metodos")',
-                type: 'POST',
-                data: JSON.stringify({ obj: Usuario }),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    $('.modal-body').LoadingOverlay("show");
-                    //  Usuario Nuevo
-                    if (Categoria.IdCategoria == 0) {
-                        if (data.resultado != 0) {
-                            Categoria.IdCategoria = data.resultado;
-                            tabladata.row.add(Categoria).draw(false);
-                            $('#GuardarCategoria').modal("hide");
-                        } else {
-                            $('#mensajeError').text(data.mensaje);
-                            $('#mensajeError').show();
-                        }
-                        //  Usuario EDITADO
-                    } else {
-                        if (data.resultado) {
-                            var rowIndex = tabladata.row(function (idx, data, node) {
-                                return data.IdCategoria === Categoria.IdCategoria;
-                            }).index();
-
-                            if (rowIndex !== null) {
-                                tabladata.row(rowIndex).data(Categoria).draw(false);
+        jQuery.ajax({
+            url: '@Url.Action("GuardarCategoria", "Metodos")',
+            type: 'POST',
+            data: JSON.stringify({ obj: Categoria }),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data.resultado) {
+                    if (Categoria.IdCategoria == 0) { // Nuevo registro
+//                        console.log("Nuevo usuario");
+                        Categoria.IdCategoria = data.resultado;
+                        tabladata.row.add(Categoria).draw(false);
+                    } else { // Editar registro existente
+//                        console.log("Editando usuario");
+                        var rowIndex = tabladata.row(function (idx, data, node) {
+                            if (data.IdCategoria == Categoria.IdCategoria) { //FIXED BUG, it was '==' no '==='
+                                return data.IdCategoria = Categoria.IdCategoria;
                             }
+                        }).index();
 
-                            $('#GuardarCategoria').modal("hide");
-                        } else {
-                            $('#mensajeError').text(data.mensaje);
-                            $('#mensajeError').show();
+                        if (rowIndex !== null) {
+                            tabladata.row(rowIndex).data(Categoria).draw(false);
+                            console.log(rowIndex);
                         }
                     }
-                },
-                error: function (data) {
-                    $('.modal-body').LoadingOverlay("hide");
-                    $('#mensajeError').text("Error AJAX");
+                    $('#modalCategorias').modal("hide");
+                } else {
+                    $('#mensajeError').text(data.mensaje);
                     $('#mensajeError').show();
-                },
-                beforeSend: function (data) {
-                    $('.modal-body').LoadingOverlay("show", {
-                        imageResizeFactor: 2,
-                        text: "Cargando...",
-                        size: 12
-                    })
-                },
-            })
-        }
-
+                }
+                $('.modal-body').LoadingOverlay("hide");
+            },
+            error: function (data) {
+                console.log('Error:', data);
+                $('.modal-body').LoadingOverlay("hide");
+                $('#mensajeError').text("Error AJAX");
+                $('#mensajeError').show();
+            },
+            beforeSend: function (data) {
+                $('.modal-body').LoadingOverlay("show", {
+                    imageResizeFactor: 2,
+                    text: "Cargando...",
+                    size: 12
+                });
+            },
+            complete: function () {
+                $('.modal-body').LoadingOverlay("hide");
+            }
+        });
+    }
     </script>
+
 }

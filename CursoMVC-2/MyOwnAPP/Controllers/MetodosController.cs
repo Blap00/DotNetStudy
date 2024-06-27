@@ -49,10 +49,9 @@ namespace MyOwnAPP.Controllers
         [HttpPost]
         public JsonResult DeleteCategoria(int id)
         {
-            bool resultado;
             string Mensaje = string.Empty;
 
-            resultado = new CN_Categoria().EliminarCategoria(id, out Mensaje);
+            bool resultado = new CN_Categoria().EliminarCategoria(id, out Mensaje);
 
             return Json(new { resultado = resultado, mensaje = Mensaje }, JsonRequestBehavior.AllowGet);
         }
