@@ -56,12 +56,50 @@ namespace MyOwnAPP.Controllers
             return Json(new { resultado = resultado, mensaje = Mensaje }, JsonRequestBehavior.AllowGet);
         }
 
-        //END CRUD USUARIOS
         // END CRUD CATEGORIAS
 
         public ActionResult Marcas()
         {
             return View();
+        }
+
+        // CRUD Marcas
+
+        //GET JSON RESULT;
+        [HttpGet]
+        public JsonResult ListarMarcas()
+        {
+            List<Marca> oLista = new List<Marca>();
+            oLista = new CN_Marca().Listar();
+
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GuardarMarcas(Marca obj)
+        {
+            object resultado;
+            string Mensaje = string.Empty;
+
+            if (obj.IdMarca == 0)
+            {
+                resultado = new CN_Marca().GuardarMarca(obj, out Mensaje);
+            }
+            else
+            {
+                resultado = new CN_Marca().EditarMarca(obj, out Mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = Mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult DeleteMarca(int id)
+        {
+            string Mensaje = string.Empty;
+
+            bool resultado = new CN_Marca().EliminarMarca(id, out Mensaje);
+
+            return Json(new { resultado = resultado, mensaje = Mensaje }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult Productos()
         {
